@@ -19,11 +19,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to Test ADF
-        uses: Azure/azure-data-factory-deployment-action@v1.3.0
-        with:
-          resourceGroupName: 'test-rg'
-          dataFactoryName: 'test-adf0705'
-          armTemplateFile: './ARMTemplateForFactory.json'
-          armTemplateParametersFile: './ARMTemplateParametersForFactory.json'
-          location: 'East US'  # Update if your ADF is in a different region
+      - name: Deploy ARM Template to Test ADF
+        run: |
+          az deployment group create \
+            --resource-group test-rg \
+            --template-file ARMTemplateForFactory.json \
+            --parameters @ARMTemplateParametersForFactory.json
