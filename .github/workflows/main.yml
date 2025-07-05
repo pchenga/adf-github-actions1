@@ -3,26 +3,27 @@ name: Deploy ADF to Test
 on:
   push:
     branches:
-      - adf-publish  # Trigger on push to adf-publish
-  workflow_dispatch:  # Allow manual trigger from GitHub UI
+      - adf-publish
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy to Test ADF
-      uses: Azure/data-factory-deploy-action@v1
-      with:
-        resourceGroupName: 'test-rg'
-        dataFactoryName: 'test-adf0705'
-        armTemplateFile: './ARMTemplateForFactory.json'
-        armTemplateParametersFile: './ARMTemplateParametersForFactory.json'
+      - name: Deploy to Test ADF
+        uses: Azure/azure-data-factory-deployment-action@v1.3.0
+        with:
+          resourceGroupName: 'test-rg'
+          dataFactoryName: 'test-adf0705'
+          armTemplateFile: './ARMTemplateForFactory.json'
+          armTemplateParametersFile: './ARMTemplateParametersForFactory.json'
+          location: 'East US'  # Update if your ADF is in a different region
