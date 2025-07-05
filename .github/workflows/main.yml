@@ -3,7 +3,8 @@ name: Deploy ADF to Test
 on:
   push:
     branches:
-      - adf-publish  # Or whatever branch triggers deployment
+      - adf-publish  # Trigger on push to adf-publish
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
 
 jobs:
   deploy:
