@@ -1,0 +1,27 @@
+name: Deploy ADF to Test
+
+on:
+  push:
+    branches:
+      - adf-publish  # Or whatever branch triggers deployment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Test ADF
+      uses: Azure/data-factory-deploy-action@v1
+      with:
+        resourceGroupName: 'test-rg'
+        dataFactoryName: 'test-adf0705'
+        armTemplateFile: './ARMTemplateForFactory.json'
+        armTemplateParametersFile: './ARMTemplateParametersForFactory.json'
